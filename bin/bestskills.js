@@ -106,8 +106,10 @@ program
     console.log('');
 
     // Step 2: Get recommendations
-    const recommendations = await getRecommendations(profile, (msg) => {
-      console.log(chalk.dim(`  ${msg}`));
+    const { recommendations } = await getRecommendations(profile, {
+      onProgress: (msg) => {
+        console.log(chalk.dim(`  ${msg}`));
+      },
     });
 
     if (recommendations.length === 0) {
