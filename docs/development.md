@@ -15,14 +15,14 @@ bun bin/bestskills.js /path/to/project --deep
 
 ## Build
 
-Build the standalone host-native binary with Bun:
+Build and package the standalone host-native binary via [`scripts/build-release.sh`](scripts/build-release.sh) (same `bun build --compile` used by CI):
 
 ```bash
 bun install
 bun run build
 ```
 
-The build writes a single compiled binary to `dist/bestskills` (`dist/bestskills.exe` on Windows). The binary runs without Node.js; only registry operations (`npx skills find`, `npx skills add`) require Node.js 18 or newer with npm. `dist/` is gitignored, so the binary is a build artifact and is never committed.
+The build writes a compiled binary to `dist/bestskills` (`dist/bestskills.exe` on Windows) and packages it as `dist/bestskills-<platform>-<arch>.tar.gz` (or `.zip`). The binary runs without Node.js; only registry operations (`npx skills find`, `npx skills add`) require Node.js 18 or newer with npm. `dist/` is gitignored, so binaries and packages are build artifacts and are never committed.
 
 ## Release
 
