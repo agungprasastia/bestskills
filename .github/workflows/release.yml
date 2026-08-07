@@ -51,14 +51,9 @@ jobs:
           path: artifacts
           merge-multiple: true
 
-      - name: Extract Release Notes
-        id: extract-release-notes
-        uses: ffurrer2/extract-release-notes@v3
-
       - name: Create Release
         uses: softprops/action-gh-release@v3
         with:
           name: ${{ github.ref_name }}
           files: artifacts/*
-          body: ${{ steps.extract-release-notes.outputs.release_notes }}
           generate_release_notes: true
