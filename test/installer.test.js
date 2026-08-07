@@ -12,7 +12,7 @@ describe('installSkills', () => {
     });
 
     expect(runCommand).toHaveBeenCalledWith(
-      'npx', ['skills', 'add', skill.skillId, '-y'], { cwd: '/app', timeout: 60000 },
+      'npx', ['skills', 'add', skill.skillId, '-y'], { cwd: '/app', timeout: 25000 },
     );
   });
 
@@ -22,7 +22,7 @@ describe('installSkills', () => {
     await installSkills([skill], { auto: true, scope: 'global', projectPath: '/app', runCommand });
 
     expect(runCommand).toHaveBeenCalledWith(
-      'npx', ['skills', 'add', skill.skillId, '-g', '-y'], { cwd: '/app', timeout: 60000 },
+      'npx', ['skills', 'add', skill.skillId, '-g', '-y'], { cwd: '/app', timeout: 25000 },
     );
   });
 
