@@ -38,6 +38,37 @@ describe('getRecommendations', () => {
     expect(results.recommendations.map((item) => item.skillId)).toEqual(['a/react-web']);
   });
 
+  it('removes results for absent specialized technologies', async () => {
+    const searchRegistry = vi.fn().mockResolvedValue([
+      { skillId: 'a/react-native', name: 'react-native', installs: 4 },
+      { skillId: 'a/clerk', name: 'clerk', installs: 3 },
+      { skillId: 'a/gsap', name: 'gsap', installs: 2 },
+      { skillId: 'a/react-email', name: 'react-email', installs: 1 },
+    ]);
+
+    const results = await getRecommendations(profile(['react']), { searchRegistry });
+
+    expect(results.recommendations).toEqual([]);
+  });
+
+  it('keeps results for detected specialized technologies', async () => {
+    const searchRegistry = vi.fn().mockResolvedValue([
+      { skillId: 'a/react-native', name: 'react-native', installs: 4 },
+      { skillId: 'a/clerk', name: 'clerk', installs: 3 },
+      { skillId: 'a/gsap', name: 'gsap', installs: 2 },
+      { skillId: 'a/react-email', name: 'react-email', installs: 1 },
+    ]);
+
+    const results = await getRecommendations(
+      profile(['react', 'react-native', 'clerk', 'gsap', 'react-email']),
+      { searchRegistry },
+    );
+
+    expect(results.recommendations.map((item) => item.skillId)).toEqual([
+      'a/react-native', 'a/clerk', 'a/gsap', 'a/react-email',
+    ]);
+  });
+
   it('filters category and applies requested maximum', async () => {
     const searchRegistry = vi.fn().mockResolvedValue([
       { skillId: 'a/eslint', name: 'eslint', installs: 5 },

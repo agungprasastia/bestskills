@@ -122,4 +122,20 @@ describe('scanProject', () => {
     expect(profile.techStack).toContain('nx');
     expect(profile.isMonorepo).toBe(true);
   });
+
+  it('detects React Native, GSAP, and React Email dependencies', async () => {
+    const directory = await project({
+      'package.json': JSON.stringify({
+        dependencies: {
+          'react-native': '^0.76.0',
+          gsap: '^3.12.0',
+          '@react-email/components': '^0.0.30',
+        },
+      }),
+    });
+
+    const profile = await scanProject(directory);
+
+    expect(profile.techStack).toEqual(expect.arrayContaining(['react-native', 'gsap', 'react-email']));
+  });
 });

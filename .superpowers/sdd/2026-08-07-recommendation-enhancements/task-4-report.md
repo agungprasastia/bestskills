@@ -17,3 +17,9 @@
 ## Concerns
 
 - Relevance exclusions are intentionally static and currently cover React Native and Clerk only. Add technology-specific exclusions only when a demonstrated false positive requires one.
+
+## Review Fix
+
+- Scanner now detects `react-native`, `gsap`, `react-email`, and `@react-email/components` dependencies in `profile.techStack`.
+- Recommender excludes React Native, Clerk, GSAP, and React Email result names/IDs unless each technology is detected.
+- Tests cover absent-tech exclusions and detected-tech admission.
