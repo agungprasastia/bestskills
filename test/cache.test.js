@@ -26,12 +26,12 @@ describe('registry cache', () => {
     await expect(getCachedQuery('react', { cachePath, now: 101 })).resolves.toEqual(results);
   });
 
-  it('returns null for expired cache data', async () => {
+  it('returns null when cache data reaches its TTL', async () => {
     const cachePath = await createCachePath();
 
     await cacheQuery('react', [], { cachePath, now: 0 });
 
-    await expect(getCachedQuery('react', { cachePath, now: CACHE_TTL_MS + 1 })).resolves.toBeNull();
+    await expect(getCachedQuery('react', { cachePath, now: CACHE_TTL_MS })).resolves.toBeNull();
   });
 
   it('returns null for malformed cache data', async () => {
