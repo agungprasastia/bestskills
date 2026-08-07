@@ -8,7 +8,17 @@ The compiled `dist/bestskills` binary runs standalone without Node.js. Node.js 1
 
 ## Install
 
-Build a standalone binary with bun:
+Install from the [latest release](https://github.com/agungprasastia/bestskills/releases):
+
+```bash
+# macOS / Linux
+curl -fsSL https://raw.githubusercontent.com/agungprasastia/bestskills/main/scripts/install.sh | bash
+
+# Windows (PowerShell)
+irm https://raw.githubusercontent.com/agungprasastia/bestskills/main/scripts/install.ps1 | iex
+```
+
+Or build a standalone binary with bun:
 
 ```bash
 git clone <repository-url> bestskills

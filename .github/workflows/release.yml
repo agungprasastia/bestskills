@@ -1,0 +1,61 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build (${{ matrix.target }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [linux-x64, linux-arm64, darwin-x64, darwin-arm64, windows-x64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Build
+        run: bun build ./bin/bestskills.js --compile "--target=bun-${{ matrix.target }}" --outfile=${{ matrix.target == 'windows-x64' && 'dist/bestskills.exe' || 'dist/bestskills' }}
+
+      - name: Package (Unix)
+        if: matrix.target != 'windows-x64'
+        run: tar czf bestskills-${{ matrix.target }}.tar.gz -C dist bestskills
+
+      - name: Package (Windows)
+        if: matrix.target == 'windows-x64'
+        run: |
+          7z a bestskills-${{ matrix.target }}.zip dist\bestskills.exe
+        shell: pwsh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bestskills-${{ matrix.target }}
+          path: bestskills-${{ matrix.target }}.${{ matrix.target == 'windows-x64' && 'zip' || 'tar.gz' }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Extract Release Notes
+        id: extract-release-notes
+        uses: ffurrer2/extract-release-notes@v3
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: artifacts/*
+          body: ${{ steps.extract-release-notes.outputs.release_notes }}
