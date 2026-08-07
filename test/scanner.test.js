@@ -84,4 +84,20 @@ describe('scanProject', () => {
     expect(profile.hasTests).toBe(true);
     expect(profile.missingPatterns).not.toContain('no-tests');
   });
+
+  it('detects quality, workflow, monorepo, and deployment tools', async () => {
+    const directory = await project({
+      'biome.json': '{}', 'eslint.config.js': 'export default [];',
+      '.prettierrc': '{}', '.husky/pre-commit': '', 'lefthook.yml': '',
+      'turbo.json': '{}', 'nx.json': '{}', 'pnpm-workspace.yaml': 'packages:\n  - packages/*',
+      'wrangler.toml': '', 'railway.json': '{}',
+    });
+    const profile = await scanProject(directory);
+
+    expect(profile.techStack).toEqual(expect.arrayContaining([
+      'biome', 'eslint', 'prettier', 'husky', 'lefthook', 'turbo', 'nx',
+      'pnpm-workspace', 'cloudflare', 'railway',
+    ]));
+    expect(profile.isMonorepo).toBe(true);
+  });
 });
