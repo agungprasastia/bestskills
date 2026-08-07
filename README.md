@@ -116,4 +116,4 @@ bun run test
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).
