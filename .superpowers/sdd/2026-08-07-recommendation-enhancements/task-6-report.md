@@ -12,4 +12,4 @@
 
 ## Commit
 
-- Pending.
+- `6fe8f0d` `test: cover installer command scopes`
