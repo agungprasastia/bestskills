@@ -1,14 +1,42 @@
-# bestskills
+<div align="center">
 
-Scan a codebase, find relevant agent skills from the [skills registry](https://skills.sh/), and install selected skills into the project or global user scope.
+```
+██████╗ ███████╗███████╗████████╗███████╗██╗  ██╗██╗██╗     ██╗     ███████╗
+██╔══██╗██╔════╝██╔════╝╚══██╔══╝██╔════╝██║ ██╔╝██║██║     ██║     ██╔════╝
+██████╔╝█████╗  ███████╗   ██║   ███████╗█████╔╝ ██║██║     ██║     ███████╗
+██╔══██╗██╔══╝  ╚════██║   ██║   ╚════██║██╔═██╗ ██║██║     ██║     ╚════██║
+██████╔╝███████╗███████║   ██║   ███████║██║  ██╗██║███████╗███████╗███████║
+╚═════╝ ╚══════╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚══════╝
+```
+
+**Scan a codebase. Find relevant agent skills. Install with one command.**
+
+[![Release](https://img.shields.io/github/v/release/agungprasastia/bestskills?style=flat-square)](https://github.com/agungprasastia/bestskills/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+
+</div>
+
+`bestskills` scans a project, detects its framework, tooling, and missing patterns, then recommends relevant agent skills from the [skills registry](https://skills.sh/) and installs the ones you pick — into the project or your global user scope.
+
+---
+
+## Features
+
+- **Smart detection** — herds frameworks, tools, test suites, auth, ORM, monorepos, CI, and missing patterns like `no-tests` or `.env.example`.
+- **Registry-powered recommendations** — queries [skills.sh](https://skills.sh/) and ranks by relevance and install count.
+- **Already-installed filtering** — skips skills you already have in the target scope.
+- **Interactive scopes** — install to a project or globally, with a prompt or via flags.
+- **Safe report modes** — `--dry-run` and `--json` preview without touching anything.
+- **24-hour cache** — registry lookups are cached (override with `--no-cache`).
 
 ## Requirements
 
-The compiled `dist/bestskills` binary runs standalone without Node.js. Node.js 18 or newer, npm, and network access are still required for registry operations, which delegate to `npx skills find` and `npx skills add`.
+- The compiled `bestskills` binary runs standalone — **no Node.js needed**.
+- Node.js 18+ and npm are required only for registry operations, which delegate to `npx skills find` and `npx skills add`.
 
 ## Install
 
-Install from the [latest release](https://github.com/agungprasastia/bestskills/releases):
+Grab the latest binary from [releases](https://github.com/agungprasastia/bestskills/releases):
 
 ```bash
 # macOS / Linux
@@ -18,10 +46,10 @@ curl -fsSL https://raw.githubusercontent.com/agungprasastia/bestskills/main/scri
 irm https://raw.githubusercontent.com/agungprasastia/bestskills/main/scripts/install.ps1 | iex
 ```
 
-Or build a standalone binary with bun:
+Or build it yourself with [Bun](https://bun.sh):
 
 ```bash
-git clone <repository-url> bestskills
+git clone https://github.com/agungprasastia/bestskills.git
 cd bestskills
 bun install
 bun run build
@@ -31,55 +59,61 @@ bun run build
 ## Quick Start
 
 ```bash
-# Scan current directory. Choose project or global scope interactively.
+# Scan the current directory — choose project or global scope interactively.
 bestskills
 
-# Scan a specific project with additional pattern checks.
+# Scan a specific project with deep pattern checks.
 bestskills ~/Projects/my-app --deep
 
-# Install every recommendation into target project without prompts.
+# Install every recommendation into the target project, no prompts.
 bestskills ~/Projects/my-app --auto --project
 
-# Install every recommendation globally without prompts.
+# Install every recommendation globally, no prompts.
 bestskills ~/Projects/my-app --auto --global
 
-# Report up to five testing recommendations without installing.
+# Preview the top five testing skills without installing.
 bestskills ~/Projects/my-app --dry-run --category testing --max 5
 
-# Emit report-only JSON for project-scope inventory.
+# Emit report-only JSON for the project scope.
 bestskills ~/Projects/my-app --json
 
-# Ignore 24-hour registry cache for a fresh search.
+# Skip the 24-hour cache for a fresh search.
 bestskills ~/Projects/my-app --no-cache
 ```
 
-## Commands
+## Usage
 
 ```text
-bestskills [path]
+bestskills [options] [path]
 ```
 
 | Option | Description |
 | --- | --- |
+| `path` | Project directory to scan (default: `.`). |
 | `--deep` | Detect test files, auth, ORM, state libraries, monorepos, source-file count, and missing patterns. |
-| `--auto` | Select every recommendation without a skill-selection prompt. Defaults to project installation unless scope is specified. |
 | `--dry-run` | Print recommendations without installing. |
-| `--json` | Emit report-only JSON without installing. Default inventory scope is project. |
-| `--max <number>` | Limit recommendations to a positive integer. Default: `10`. |
-| `--category <name>` | Filter recommendations: `testing`, `quality`, `devops`, `security`, `design`, or `framework`. |
+| `--json` | Emit report-only JSON without installing (default scope: project). |
+| `--max <number>` | Limit recommendations to a positive integer (default: `10`). |
+| `--category <name>` | Filter by category: `testing`, `quality`, `devops`, `security`, `design`, `framework`. |
 | `--no-cache` | Bypass the 24-hour registry query cache. |
-| `-p, --project` | Install into target project root. |
-| `-g, --global` | Install into global user scope. |
-| `-h, --help` | Show command help. |
-
-## Testing
-
-```bash
-npm test
-```
+| `-p, --project` | Install into the target project root. |
+| `-g, --global` | Install into the global user scope. |
+| `--auto` | Auto-select every recommendation (defaults to project unless scope is given). |
+| `-h, --help` | Show help. |
 
 ## Documentation
 
 - [User guide](docs/user-guide.md)
 - [Development guide](docs/development.md)
 - [Architecture decisions](docs/decisions/)
+
+## Testing
+
+```bash
+bun install
+bun run test
+```
+
+## License
+
+MIT
