@@ -47,6 +47,27 @@ bestskills scan ./my-project --auto
 bestskills scan ./my-project --auto --global
 ```
 
+## Report Recommendations
+
+Use `--dry-run` to display recommendations without installing. Use `--json` for machine-readable report-only output. Neither flag installs skills. Both default installed-skill inventory to project scope unless `--global` is supplied.
+
+```bash
+# Print recommendations without installing.
+bestskills scan ./my-project --dry-run
+
+# Emit report-only JSON without installing.
+bestskills scan ./my-project --json
+
+# Limit output. Default maximum is 10.
+bestskills scan ./my-project --max 5
+
+# Filter by category: testing, quality, devops, security, design, or framework.
+bestskills scan ./my-project --category testing
+
+# Refresh registry results instead of using 24-hour cached queries.
+bestskills scan ./my-project --no-cache
+```
+
 ## Troubleshooting
 
 ### No tech stack detected

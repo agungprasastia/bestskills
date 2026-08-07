@@ -33,6 +33,15 @@ bestskills scan ~/Projects/my-app --auto --project
 
 # Install every recommendation globally without prompts.
 bestskills scan ~/Projects/my-app --auto --global
+
+# Report up to five testing recommendations without installing.
+bestskills scan ~/Projects/my-app --dry-run --category testing --max 5
+
+# Emit report-only JSON for project-scope inventory.
+bestskills scan ~/Projects/my-app --json
+
+# Ignore 24-hour registry cache for a fresh search.
+bestskills scan ~/Projects/my-app --no-cache
 ```
 
 ## Commands
@@ -45,6 +54,11 @@ bestskills scan [path]
 | --- | --- |
 | `--deep` | Detect test files, auth, ORM, state libraries, monorepos, source-file count, and missing patterns. |
 | `--auto` | Select every recommendation without a skill-selection prompt. Defaults to project installation unless scope is specified. |
+| `--dry-run` | Print recommendations without installing. |
+| `--json` | Emit report-only JSON without installing. Default inventory scope is project. |
+| `--max <number>` | Limit recommendations to a positive integer. Default: `10`. |
+| `--category <name>` | Filter recommendations: `testing`, `quality`, `devops`, `security`, `design`, or `framework`. |
+| `--no-cache` | Bypass the 24-hour registry query cache. |
 | `-p, --project` | Install into target project root. |
 | `-g, --global` | Install into global user scope. |
 | `-h, --help` | Show command help. |

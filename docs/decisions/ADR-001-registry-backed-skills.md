@@ -38,3 +38,7 @@ Rejected because reusable personal workflows need a user-level installation opti
 - Scanner remains offline and dependency-light; registry access still requires network connectivity.
 - New technology support requires an explicit scanner rule and registry-query mapping.
 - A failed skill installation does not stop installation of other selected skills.
+- Registry query results use a 24-hour per-user cache; `--no-cache` forces fresh registry searches.
+- Installed skills are filtered from recommendations using project scope by default or global scope with `--global`.
+- Relevance filtering excludes known unsupported ecosystem variants; remaining results sort deterministically by priority then install count.
+- `--json` emits report-only JSON and `--dry-run` prints recommendations; neither mode installs skills.
