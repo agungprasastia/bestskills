@@ -1,0 +1,20 @@
+{
+  "name": "bestskills",
+  "version": "1.0.0",
+  "description": "Scan projects and recommend agent skills from the registry",
+  "type": "module",
+  "bin": {
+    "bestskills": "./bin/bestskills.js"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.0.0",
+    "chalk": "^5.4.0",
+    "commander": "^13.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.10"
+  }
+}
