@@ -33,6 +33,17 @@ function createDependencies(overrides = {}) {
 }
 
 describe('runScan', () => {
+  it('leaves install scope unset for an interactive scan without scope flags', async () => {
+    const dependencies = createDependencies();
+
+    await runScan('/app', { cache: true }, dependencies);
+
+    expect(dependencies.installSkills).toHaveBeenCalledWith(
+      [{ skillId: 'owner/repo@new', name: 'New skill' }],
+      { auto: undefined, scope: null, projectPath: '/app' },
+    );
+  });
+
   it('does not install during dry run', async () => {
     const dependencies = createDependencies();
 
