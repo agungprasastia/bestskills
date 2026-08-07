@@ -8,14 +8,15 @@ The compiled `dist/bestskills` binary runs standalone without Node.js. Node.js 1
 
 ## Install
 
+Build a standalone binary with bun:
+
 ```bash
 git clone <repository-url> bestskills
 cd bestskills
-npm install
-npm link
+bun install
+bun run build
+./dist/bestskills --help
 ```
-
-`npm link` makes the `bestskills` command available globally from this checkout.
 
 ## Quick Start
 

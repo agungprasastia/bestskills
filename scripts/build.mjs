@@ -7,11 +7,15 @@ const output = join('dist', process.platform === 'win32' ? 'bestskills.exe' : 'b
 await rm(dirname(output), { recursive: true, force: true });
 await mkdir('dist', { recursive: true });
 
-const { status } = spawnSync(
+const { error, status } = spawnSync(
   'bun',
   ['build', './bin/bestskills.js', '--compile', `--outfile=${output}`],
   { stdio: 'inherit' },
 );
+
+if (error) {
+  throw new Error(`Build failed: unable to run bun (${error.message}). Install bun from https://bun.sh.`);
+}
 
 if (status !== 0) {
   throw new Error(`Build failed with status ${status}`);
