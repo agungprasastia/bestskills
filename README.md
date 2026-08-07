@@ -4,9 +4,7 @@ Scan a codebase, find relevant agent skills from the [skills registry](https://s
 
 ## Requirements
 
-- Node.js 18 or newer
-- npm
-- Network access for `npx skills find` and `npx skills add`
+The compiled `dist/bestskills` binary runs standalone without Node.js. Node.js 18 or newer, npm, and network access are still required for registry operations, which delegate to `npx skills find` and `npx skills add`.
 
 ## Install
 
@@ -23,31 +21,31 @@ npm link
 
 ```bash
 # Scan current directory. Choose project or global scope interactively.
-bestskills scan
+bestskills
 
 # Scan a specific project with additional pattern checks.
-bestskills scan ~/Projects/my-app --deep
+bestskills ~/Projects/my-app --deep
 
 # Install every recommendation into target project without prompts.
-bestskills scan ~/Projects/my-app --auto --project
+bestskills ~/Projects/my-app --auto --project
 
 # Install every recommendation globally without prompts.
-bestskills scan ~/Projects/my-app --auto --global
+bestskills ~/Projects/my-app --auto --global
 
 # Report up to five testing recommendations without installing.
-bestskills scan ~/Projects/my-app --dry-run --category testing --max 5
+bestskills ~/Projects/my-app --dry-run --category testing --max 5
 
 # Emit report-only JSON for project-scope inventory.
-bestskills scan ~/Projects/my-app --json
+bestskills ~/Projects/my-app --json
 
 # Ignore 24-hour registry cache for a fresh search.
-bestskills scan ~/Projects/my-app --no-cache
+bestskills ~/Projects/my-app --no-cache
 ```
 
 ## Commands
 
 ```text
-bestskills scan [path]
+bestskills [path]
 ```
 
 | Option | Description |

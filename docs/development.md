@@ -10,8 +10,19 @@ npm test
 Run local CLI without linking it:
 
 ```bash
-node bin/bestskills.js scan /path/to/project --deep
+node bin/bestskills.js /path/to/project --deep
 ```
+
+## Build
+
+Build the standalone host-native binary with Bun:
+
+```bash
+bun install
+bun run build
+```
+
+The build writes a single compiled binary to `dist/bestskills` (`dist/bestskills.exe` on Windows). The binary runs without Node.js; only registry operations (`npx skills find`, `npx skills add`) require Node.js 18 or newer with npm. `dist/` is gitignored, so the binary is a build artifact and is never committed.
 
 ## Repository Layout
 
