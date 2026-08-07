@@ -9,44 +9,60 @@
 ╚═════╝ ╚══════╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚══════╝
 ```
 
-**Scan a codebase. Find relevant agent skills. Install with one command.**
+### Automated Skill Recommender & Installer for AI Coding Agents
 
-[![Release](https://img.shields.io/github/v/release/agungprasastia/bestskills?style=flat-square)](https://github.com/agungprasastia/bestskills/releases)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![CI](https://github.com/agungprasastia/bestskills/actions/workflows/ci.yml/badge.svg)](https://github.com/agungprasastia/bestskills/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/agungprasastia/bestskills?style=flat-square&color=blue)](https://github.com/agungprasastia/bestskills/releases)
+[![Bun](https://img.shields.io/badge/Bun-1.3+-black?style=flat-square&logo=bun)](https://bun.sh)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+
+[Features](#features) • [Installation](#installation) • [Quick Start](#quick-start) • [Supported Stack](#supported-stack) • [CLI Reference](#cli-reference) • [Documentation](#documentation)
 
 </div>
 
-`bestskills` scans a project, detects its framework, tooling, and missing patterns, then recommends relevant agent skills from the [skills registry](https://skills.sh/) and installs the ones you pick — into the project or your global user scope.
+---
+
+## Overview
+
+**`bestskills`** is an intelligent CLI tool designed for developers using AI agent frameworks. It analyzes your codebase—detecting languages, frameworks, testing suites, ORMs, auth systems, CI/CD setups, and missing patterns—then automatically queries the [skills.sh](https://skills.sh/) registry to recommend and install the exact agent skills your project needs.
+
+```
+ ┌──────────────┐     ┌────────────────┐     ┌──────────────────┐     ┌──────────────────┐
+ │  Scan Code   │ ──> │ Query Registry │ ──> │ Filter Installed │ ──> │ Install Skills   │
+ │ (Stack & LOC)│     │  (skills.sh)   │     │  & Relevance     │     │ (npx skills add) │
+ └──────────────┘     └────────────────┘     └──────────────────┘     └──────────────────┘
+```
 
 ---
 
 ## Features
 
-- **Smart detection** — herds frameworks, tools, test suites, auth, ORM, monorepos, CI, and missing patterns like `no-tests` or `.env.example`.
-- **Registry-powered recommendations** — queries [skills.sh](https://skills.sh/) and ranks by relevance and install count.
-- **Already-installed filtering** — skips skills you already have in the target scope.
-- **Interactive scopes** — install to a project or globally, with a prompt or via flags.
-- **Safe report modes** — `--dry-run` and `--json` preview without touching anything.
-- **24-hour cache** — registry lookups are cached (override with `--no-cache`).
+- **⚡ Zero-Config Detection** — Instantly identifies 30+ frameworks, libraries, tools, and missing conventions (e.g. `no-tests`, `no-ci`, `no-env-example`).
+- **🔍 Registry Intelligence** — Queries [skills.sh](https://skills.sh/) with smart relevance exclusions (filters out incompatible cross-stack matches like React Native or GSAP when inappropriate).
+- **🚀 Dual Scope Support** — Install recommended skills directly into the target **project root** or your **global user scope**.
+- **📦 Deduplication & Cache** — Inspects currently installed skills to prevent duplicate prompts and caches registry responses locally for 24 hours (`~/.cache/bestskills/registry.json`).
+- **🛡️ Safe Inspection Modes** — Non-destructive `--dry-run` and structured `--json` output modes for script automation and CI integration.
+- **🚀 Native Standalone Executable** — Compiled with Bun for zero-dependency execution across Linux, macOS, and Windows.
 
-## Requirements
+---
 
-- The compiled `bestskills` binary runs standalone — **no Node.js needed**.
-- Node.js 18+ and npm are required only for registry operations, which delegate to `npx skills find` and `npx skills add`.
+## Installation
 
-## Install
+### One-Line Installers (Recommended)
 
-Grab the latest binary from [releases](https://github.com/agungprasastia/bestskills/releases):
-
+**macOS / Linux:**
 ```bash
-# macOS / Linux
 curl -fsSL https://raw.githubusercontent.com/agungprasastia/bestskills/main/scripts/install.sh | bash
+```
 
-# Windows (PowerShell)
+**Windows (PowerShell):**
+```powershell
 irm https://raw.githubusercontent.com/agungprasastia/bestskills/main/scripts/install.ps1 | iex
 ```
 
-Or build it yourself with [Bun](https://bun.sh):
+### Build from Source
+
+Requirements: [Bun 1.3+](https://bun.sh)
 
 ```bash
 git clone https://github.com/agungprasastia/bestskills.git
@@ -56,64 +72,88 @@ bun run build
 ./dist/bestskills --help
 ```
 
+---
+
 ## Quick Start
 
 ```bash
-# Scan the current directory — choose project or global scope interactively.
+# Interactive scan in the current directory
 bestskills
 
-# Scan a specific project with deep pattern checks.
+# Deep pattern scan on a specific repository
 bestskills ~/Projects/my-app --deep
 
-# Install every recommendation into the target project, no prompts.
+# Non-interactive auto-installation into project root
 bestskills ~/Projects/my-app --auto --project
 
-# Install every recommendation globally, no prompts.
-bestskills ~/Projects/my-app --auto --global
-
-# Preview the top five testing skills without installing.
+# Preview testing-category recommendations without installing
 bestskills ~/Projects/my-app --dry-run --category testing --max 5
 
-# Emit report-only JSON for the project scope.
+# Export structured JSON report for CI pipelines
 bestskills ~/Projects/my-app --json
 
-# Skip the 24-hour cache for a fresh search.
+# Bypass the 24-hour query cache for fresh registry results
 bestskills ~/Projects/my-app --no-cache
 ```
 
-## Usage
+---
+
+## Supported Stack
+
+`bestskills` automatically profiles your project structure and dependencies:
+
+| Category | Supported Detectors |
+| --- | --- |
+| **Frameworks** | React, Vue, Next.js, Nuxt, Svelte, Angular, Express, Fastify, NestJS, Hono |
+| **Languages** | TypeScript, JavaScript, Python, Go, Rust |
+| **Styling & UI** | Tailwind CSS |
+| **Quality Tools** | Biome, ESLint, Prettier |
+| **DevOps & Tools** | Docker, GitHub Actions, GitLab CI, Husky, Lefthook, Turborepo, Nx, Cloudflare Workers, Railway, Monorepos |
+| **Deep Scan (`--deep`)** | Auth (NextAuth, Clerk, Auth0, Supabase), ORM (Prisma, Drizzle, TypeORM), State (Zustand, Redux, Pinia), Source metrics (~LOC) |
+
+---
+
+## CLI Reference
 
 ```text
 bestskills [options] [path]
 ```
 
-| Option | Description |
-| --- | --- |
-| `path` | Project directory to scan (default: `.`). |
-| `--deep` | Detect test files, auth, ORM, state libraries, monorepos, source-file count, and missing patterns. |
-| `--dry-run` | Print recommendations without installing. |
-| `--json` | Emit report-only JSON without installing (default scope: project). |
-| `--max <number>` | Limit recommendations to a positive integer (default: `10`). |
-| `--category <name>` | Filter by category: `testing`, `quality`, `devops`, `security`, `design`, `framework`. |
-| `--no-cache` | Bypass the 24-hour registry query cache. |
-| `-p, --project` | Install into the target project root. |
-| `-g, --global` | Install into the global user scope. |
-| `--auto` | Auto-select every recommendation (defaults to project unless scope is given). |
-| `-h, --help` | Show help. |
+### Options
+
+| Flag | Short | Description | Default |
+| --- | --- | --- | --- |
+| `path` | | Directory path of the target project | `.` |
+| `--deep` | | Enable deep pattern analysis (auth, ORM, state, monorepo, LOC) | `false` |
+| `--auto` | | Auto-install all recommendations without interactive prompts | `false` |
+| `--dry-run` | | Print recommendations without installing | `false` |
+| `--json` | | Emit machine-readable JSON output | `false` |
+| `--max` | | Maximum number of recommendations to retrieve | `10` |
+| `--category` | | Filter by category (`testing`, `quality`, `devops`, `security`, `design`, `framework`) | All |
+| `--no-cache` | | Bypass the 24-hour local registry cache | `false` |
+| `--project` | `-p` | Force installation into target project root | Interactive |
+| `--global` | `-g` | Force installation into global user scope | Interactive |
+| `--help` | `-h` | Display help information | |
+| `--version` | `-V` | Output version number | |
+
+---
+
+## Prerequisites
+
+- **Binary Execution:** Standalone compiled binaries run natively without Node.js.
+- **Registry Installation:** Node.js 18+ and `npm` are required during the installation phase, as `bestskills` delegates execution to `npx skills add`.
+
+---
 
 ## Documentation
 
-- [User guide](docs/user-guide.md)
-- [Development guide](docs/development.md)
-- [Architecture decisions](docs/decisions/)
+- 📘 [User Guide](docs/user-guide.md) — Usage workflows and flag combinations
+- 🛠️ [Development Guide](docs/development.md) — Architecture, testing, and build scripts
+- 📜 [Changelog](CHANGELOG.md) — Release notes and version history
+- 📄 [License](LICENSE) — MIT License
 
-## Testing
-
-```bash
-bun install
-bun run test
-```
+---
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+Distributed under the MIT License. See [`LICENSE`](LICENSE) for more details.
