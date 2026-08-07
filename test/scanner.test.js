@@ -100,4 +100,26 @@ describe('scanProject', () => {
     ]));
     expect(profile.isMonorepo).toBe(true);
   });
+
+  it('detects a Turbo dependency as monorepo evidence', async () => {
+    const directory = await project({
+      'package.json': JSON.stringify({ devDependencies: { turbo: '^2.0.0' } }),
+    });
+
+    const profile = await scanProject(directory);
+
+    expect(profile.techStack).toContain('turbo');
+    expect(profile.isMonorepo).toBe(true);
+  });
+
+  it('detects an Nx dependency as monorepo evidence', async () => {
+    const directory = await project({
+      'package.json': JSON.stringify({ devDependencies: { nx: '^20.0.0' } }),
+    });
+
+    const profile = await scanProject(directory);
+
+    expect(profile.techStack).toContain('nx');
+    expect(profile.isMonorepo).toBe(true);
+  });
 });
