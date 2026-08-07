@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { runScan } from '../lib/cli.js';
+
+const execFileAsync = promisify(execFile);
 
 const profile = {
   techStack: ['react'],
@@ -94,5 +98,15 @@ describe('runScan', () => {
     await expect(runScan('/app', { max: 0, cache: true }, dependencies))
       .rejects.toThrow('--max must be a positive integer');
     expect(dependencies.scanProject).not.toHaveBeenCalled();
+  });
+});
+
+describe('root CLI command', () => {
+  it('shows scan options on the root command', async () => {
+    const { stdout } = await execFileAsync('node', ['bin/bestskills.js', '--help']);
+
+    expect(stdout).toContain('Usage: bestskills [options] [path]');
+    expect(stdout).toContain('--deep');
+    expect(stdout).not.toContain('scan [options]');
   });
 });

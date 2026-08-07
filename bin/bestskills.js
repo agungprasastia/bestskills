@@ -17,8 +17,6 @@ program
   .version('1.0.0');
 
 program
-  .command('scan')
-  .description('Scan a project and recommend skills to install')
   .argument('[path]', 'Project directory to scan', '.')
   .option('--deep', 'Enable deep pattern analysis')
   .option('--auto', 'Auto-install all recommendations without prompting')
