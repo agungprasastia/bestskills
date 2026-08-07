@@ -154,6 +154,24 @@ bestskills [options] [path]
 
 ---
 
+## Development & Testing
+
+```bash
+# Run CLI directly from source during development
+bun run dev -- ~/Projects/my-app --deep
+
+# Build a quick local binary (without .tar.gz packaging)
+bun run build:dev
+
+# Run all unit tests
+bun run test
+
+# Run tests in watch mode
+bun run test:watch
+```
+
+---
+
 ## License
 
 Distributed under the MIT License. See [`LICENSE`](LICENSE) for more details.

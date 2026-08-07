@@ -7,10 +7,15 @@ bun install
 bun run test
 ```
 
-Run local CLI without linking it:
+Run local CLI during development:
 
 ```bash
-bun bin/bestskills.js /path/to/project --deep
+# Run source CLI directly with Bun
+bun run dev -- ~/Projects/my-app --deep
+
+# Or build a quick local binary (without tar.gz packaging)
+bun run build:dev
+./dist/bestskills ~/Projects/my-app --deep
 ```
 
 ## Build

@@ -4,8 +4,12 @@
   "description": "Scan projects and recommend agent skills from the registry",
   "type": "module",
   "scripts": {
+    "dev": "bun bin/bestskills.js",
+    "start": "bun bin/bestskills.js",
     "build": "scripts/build-release.sh",
-    "test": "vitest run"
+    "build:dev": "bun build ./bin/bestskills.js --compile --outfile=dist/bestskills",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@inquirer/prompts": "^7.0.0",
