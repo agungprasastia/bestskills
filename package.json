@@ -3,10 +3,8 @@
   "version": "1.0.0",
   "description": "Scan projects and recommend agent skills from the registry",
   "type": "module",
-  "bin": {
-    "bestskills": "./bin/bestskills.js"
-  },
   "scripts": {
+    "build": "bun scripts/build.mjs",
     "test": "vitest run"
   },
   "dependencies": {
