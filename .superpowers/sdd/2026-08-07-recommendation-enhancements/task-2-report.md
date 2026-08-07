@@ -46,3 +46,14 @@ Results:
 ## Concern
 
 `npx skills list --json` command behavior is mocked at process boundary. CLI integration is intentionally outside Task 2 scope.
+
+## Review Fix
+
+Restricted returned IDs to strings. Numeric and null `id` or `skillId` values are discarded, preserving `Set<string>` contract.
+
+Added regression coverage for numeric and null IDs.
+
+Verification after fix:
+
+- Inventory tests: 1 file, 5 tests passed
+- Full suite: 4 files, 13 tests passed

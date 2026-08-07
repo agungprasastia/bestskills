@@ -33,4 +33,13 @@ describe('installed skill inventory', () => {
       runCommand: vi.fn().mockResolvedValue({ stdout: 'not json' }),
     })).resolves.toBeNull();
   });
+
+  it('discards non-string skill IDs', async () => {
+    const runCommand = vi.fn().mockResolvedValue({
+      stdout: JSON.stringify([{ id: 1 }, { skillId: null }, { id: 'owner/repo@skill' }]),
+    });
+
+    await expect(getInstalledSkillIds({ scope: 'project', projectPath: '/app', runCommand }))
+      .resolves.toEqual(new Set(['owner/repo@skill']));
+  });
 });
